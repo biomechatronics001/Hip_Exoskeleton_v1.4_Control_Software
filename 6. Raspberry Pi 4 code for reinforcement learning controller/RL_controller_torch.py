@@ -25,7 +25,8 @@ import csv
 # input_data = torch.rand(1,18)
 
 # Initialize IMU and DNN
-ComPort = '/dev/ttyUSB0'
+#ComPort = '/dev/ttyUSB0'
+ComPort = '/dev/serial0'
 imu = ReadIMU.READIMU(ComPort)
 start = time.time()
 dnn = DNN(18, 128, 64, 2)
@@ -34,6 +35,7 @@ t_pr1 = 0
 t_pr2 = 0
 t_pr3 = 0
 pk = 0
+counter = 0
 
 date = time.localtime(time.time())
 date_year = date.tm_year
@@ -42,6 +44,8 @@ date_day = date.tm_mday
 date_hour = date.tm_hour
 date_minute = date.tm_min
 date_second = date.tm_sec
+
+output = np.array([])
 
 # Create filename with format {Year}{Month}{Day}-{Hour}{Minute}{Second}.csv
 csv_filename = f"{date_year:04}{date_month:02}{date_day:02}-{date_hour:02}{date_minute:02}{date_second:02}.csv"
@@ -57,8 +61,19 @@ with open(csv_filename, 'a', newline='') as csvfile:
     while True:
         now = (time.time() - start)
         imu.read()
-        imu.decode()
+        imu.decode() 
+        print("count :", counter) 
 
+        # if counter % 1000 == 0:
+        #     imu.Serial_IMU.reset_input_buffer()
+        #     imu.Serial_IMU.reset_output_buffer() 
+        #     # print("----------------------------------------")
+        #     # print("----------------------------------------")
+        #     # print("----------------------------------------")
+        #     # print("----------------------------------------") 
+        #     # print("----------------------------------------")
+
+        counter = counter + 1
         L_IMU_angle = imu.XIMUL
         R_IMU_angle = imu.XIMUR
         L_IMU_vel = imu.XVIMUL
@@ -66,7 +81,8 @@ with open(csv_filename, 'a', newline='') as csvfile:
         print(f"Time after reading IMU = {now:^8.3f}")
 
         
-
+        # L_Cmd = 0
+        # R_Cmd = 0
         if (now - t_pr3 > 3):  # Time to reset peak torque printed to terminal
             t_pr3 = now
             pk = 0
@@ -100,11 +116,6 @@ with open(csv_filename, 'a', newline='') as csvfile:
 
             imu.send(b1, b2, b3, b4)
 
-        if (now - t_pr2 > 0.001):
-            t_pr2 = now
-            print(f"| now: {now:^8.3f} | L_IMU_Ang: {L_IMU_angle:^8.3f} | R_IMU_Ang: {R_IMU_angle:^8.3f} | L_IMU_Vel: {L_IMU_vel:^8.3f} | R_IMU_Vel: {R_IMU_vel:^8.3f} | L_Cmd: {L_Cmd:^8.3f} | R_Cmd: {R_Cmd:^8.3f} | Peak: {pk:^8.3f} |")
-            
-            # Save the data to the CSV file
             data = {
                 'L_IMU_Ang': L_IMU_angle,
                 'R_IMU_Ang': R_IMU_angle,
@@ -117,3 +128,21 @@ with open(csv_filename, 'a', newline='') as csvfile:
             }
             writer.writerow(data)
             csvfile.flush()  # Ensure data is written to file 
+            print(f"| now: {now:^8.3f} | L_IMU_Ang: {L_IMU_angle:^8.3f} | R_IMU_Ang: {R_IMU_angle:^8.3f} | L_IMU_Vel: {L_IMU_vel:^8.3f} | R_IMU_Vel: {R_IMU_vel:^8.3f} | L_Cmd: {L_Cmd:^8.3f} | R_Cmd: {R_Cmd:^8.3f} | Peak: {pk:^8.3f} |")
+        # if (now - t_pr2 > 0.001):
+            # t_pr2 = now
+            # print(f"| now: {now:^8.3f} | L_IMU_Ang: {L_IMU_angle:^8.3f} | R_IMU_Ang: {R_IMU_angle:^8.3f} | L_IMU_Vel: {L_IMU_vel:^8.3f} | R_IMU_Vel: {R_IMU_vel:^8.3f} | L_Cmd: {L_Cmd:^8.3f} | R_Cmd: {R_Cmd:^8.3f} | Peak: {pk:^8.3f} |")
+            
+            # # Save the data to the CSV file
+            # data = {
+                # 'L_IMU_Ang': L_IMU_angle,
+                # 'R_IMU_Ang': R_IMU_angle,
+                # 'L_IMU_Vel': L_IMU_vel,
+                # 'R_IMU_Vel': R_IMU_vel,
+                # 'L_Cmd': L_Cmd,
+                # 'R_Cmd': R_Cmd,
+                # 'Peak': pk,
+                # 'Time': now
+            # }
+            # writer.writerow(data)
+            # csvfile.flush()  # Ensure data is written to file 

@@ -58,6 +58,8 @@ class DNN:
         self.n_third = n_third
         self.b = np.array([0.0730, 0, -0.0730])
         self.a = np.array([1.0000, -1.8486, 0.8541])
+        #self.b = np.array([0.0336,    0.0671,    0.0336])
+        #self.a = np.array([1.0000,   -1.4190,    0.5533])
         self.x_L = np.zeros(3)
         self.y_L = np.zeros(3)
         self.x_R = np.zeros(3)

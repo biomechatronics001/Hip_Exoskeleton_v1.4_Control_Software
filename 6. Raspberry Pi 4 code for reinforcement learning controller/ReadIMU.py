@@ -23,19 +23,19 @@ class READIMU(object):
         self.XVIMUR=0
         #Serial Variables --------
         self.buffer = 0x00
-        self.buffer_len = 0x00
+        self.buffer_len = 0x00  
         #Serial Begin -------------
-        #self.Serial_IMU = serial.Serial(ComPort, 230400, timeout=0.007, parity=serial.PARITY_NONE)
+        # self.Serial_IMU = serial.Serial(ComPort, 230400, timeout=0.02, parity=serial.PARITY_NONE)
         #self.Serial_IMU = serial.Serial(ComPort, 115200, timeout=0.007, parity=serial.PARITY_NONE)
-        self.Serial_IMU = serial.Serial(ComPort, 115200, timeout=0.007, parity=serial.PARITY_NONE)
+        self.Serial_IMU = serial.Serial(ComPort, 115200, timeout=0.02, parity=serial.PARITY_NONE)  
 
         print('Serial Open Success')
         #Serial END---------------
 
     def read(self):
-        self.buffer = self.Serial_IMU.read(11)
-        self.buffer_len = len(self.buffer)
-        #print(self.buffer)
+        self.buffer = self.Serial_IMU.read(11)  
+        self.buffer_len = len(self.buffer)  
+        print("length: ", self.buffer_len, self.buffer[0], self.buffer[1], self.buffer[10])  
 
     def send(self,b1,b2,b3,b4):
         self.Serial_IMU.write(bytearray([0x40, 0x41, 0x42, 
@@ -83,6 +83,20 @@ class READIMU(object):
             
 
             #print(hex(self.buffer))
+        else:
+            # input()  
+            print("----------------------------------------")
+            print("----------------------------------------")
+            print("----------------------------------------")
+            print("----------------------------------------") 
+            print("----------------------------------------")  
+            print("----------------------------------------")
+            print("----------------------------------------")
+            print("----------------------------------------")
+            print("----------------------------------------") 
+            print("----------------------------------------")
+            self.Serial_IMU.reset_input_buffer()
+            self.Serial_IMU.reset_output_buffer()
 
 
 
