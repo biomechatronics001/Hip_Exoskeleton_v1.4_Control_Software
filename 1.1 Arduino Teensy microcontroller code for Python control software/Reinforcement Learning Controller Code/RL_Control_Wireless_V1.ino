@@ -82,7 +82,8 @@ double t;
 
 //***For managing the Controller and Bluetooth rate
 unsigned long t_0 = 0;
-double cyclespersec_ctrl = 28;  // [Hz] teensy controller sample rate (Maximum frequency: 1000 Hz due to Can Bus) Controller must be faster than ble
+// double cyclespersec_ctrl = 28;  // [Hz] teensy controller sample rate (Maximum frequency: 1000 Hz due to Can Bus) Controller must be faster than ble
+double cyclespersec_ctrl = 100;  // [Hz] teensy controller sample rate (Maximum frequency: 1000 Hz due to Can Bus) Controller must be faster than ble
 double cyclespersec_ble  = 20;  // [Hz] Bluetooth sending data frequency
 unsigned long current_time = 0;
 unsigned long previous_time = 0;                                           // used to control the controller sample rate.
@@ -114,6 +115,7 @@ void setup() {
   Serial2.begin(115200);  //115200/9600=12
   //Serial7.begin(115200);  // Communication with Raspberry PI or PC for High-lever controllers like RL
   Serial5.begin(115200);  //used to communication with bluetooth peripheral. Teensy->RS232->Adafruit Feather nRF52840 Express(peripheral)
+  
   Serial_Com.INIT();
   //#################
   Serial.println("SETUP DONE");
@@ -162,7 +164,7 @@ void loop() {
     R_CMD_serial = Serial_Com.uint_to_float(R_CMD_int16, -20, 20, 16);
 
     M1_torque_command = GUI_K * L_CMD_serial;
-    M2_torque_command = GUI_K * -R_CMD_serial;
+    M2_torque_command = GUI_K * R_CMD_serial;
 
     int max_allowed_torque = 30; // Safety measurement to limit the commanded torque
 
@@ -222,7 +224,7 @@ void print_Data_Ivan() {
   Serial.print(" ");
   Serial.print(imu.LTx);
   Serial.print(" ");
-  Serial.print(imu.RTx);
+  Serial.print(imu.LTAVx);
   Serial.print(" ");
    Serial.print(m1.torque);
   Serial.print(" ");

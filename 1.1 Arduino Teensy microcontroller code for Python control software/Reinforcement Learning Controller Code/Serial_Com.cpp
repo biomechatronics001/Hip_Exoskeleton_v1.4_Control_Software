@@ -2,8 +2,8 @@
 
 void Serial_Com::INIT()
 {
-  //SERIAL_Isra.begin(115200);
-  SERIAL_Isra.begin(115200);
+  // SERIAL_Isra.begin(230400); 
+  SERIAL_Isra.begin(115200); 
   //SERIAL_Isra.begin(9600);
 }
 
