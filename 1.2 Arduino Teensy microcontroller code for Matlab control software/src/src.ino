@@ -11,7 +11,7 @@ ads1292r torque_sensor1;//FOR THE TORQUE SENSORS
 //#include <SD.h>
 
 // Settings
-int assist_mode = 1;
+int assist_mode = 20;
 int stopFlag = 0;
 int saveDataFlag = 1;
 int numOfInitialSteps = 1;
@@ -184,6 +184,10 @@ int logDay;
 int logHour;
 int logMinute;
 int logSecond;
+
+// for NYU controller
+double NYU_start_time = micros();
+double NYU_time = 0.0;
 
 
 void setup()
@@ -504,6 +508,9 @@ void CurrentControl()
     torque_measured_R = torque_sensor1.torque[1];
     // Serial.print(-torque_sensor1.torque[0]); Serial.print("   ");//FOR THE TORQUE SENSORS. THIS IS THE LEFT MOTOR
     // Serial.println(torque_command_L);
+    Serial.print(imu.LTx);
+    Serial.print(" ");
+    Serial.println(torque_command_L);
 
     // plot_controller_data();
 
@@ -580,6 +587,23 @@ void Compute_Torque_Commands()
     kd = 0; //dont change this
     torque_command_L = 0;
     torque_command_R = 0;
+    Cur_command_L = torque_command_L / torque_constant_before_gear / Gear_ratio;
+    Cur_command_R = torque_command_R / torque_constant_before_gear / Gear_ratio;
+  }
+  else if (assist_mode == 20) //NYU controller
+  {
+    mode = "NYU controller";
+    p_des = 0; //dont change this
+    v_des = 0; //dont change this
+    kp = 0; //dont change this
+    kd = 0; //dont change this
+    double x = (imu.LTx - imu.RTx) / 180.0 * 3.1415926;
+    double x_dot = (imu.LTAVx - imu.RTAVx) / 180 * 3.1415926;
+    NYU_time = (micros() - NYU_start_time) / 1000000.0;
+    torque_command_L = - (13.9758 * x + 2.1551 * x_dot) + (-6.3961 * 1 + (-4.3143) * sin(NYU_time) + (-6.2224) * cos(NYU_time) + (-3.9566) * sin(2*NYU_time) + 1.2621 * cos(2*NYU_time) + (-2.4282) * sin(3*NYU_time) + 5.5883 * cos(3*NYU_time) + (-416.1619) * sin(4*NYU_time) + 210.3456 * cos(4*NYU_time) + 10.3936 * sin(5*NYU_time) + (-3.5327) * cos(5*NYU_time));
+    torque_command_R = -torque_command_L;
+    torque_command_L = -torque_command_L * 0.01;
+    torque_command_R = torque_command_R * 0.01;
     Cur_command_L = torque_command_L / torque_constant_before_gear / Gear_ratio;
     Cur_command_R = torque_command_R / torque_constant_before_gear / Gear_ratio;
   }
