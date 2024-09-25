@@ -1,11 +1,5 @@
 '''
-Entry 05/06/2024
-This is a modification of the runnig version of "HipExo_GUI_v10.py".
-
-The following was added:
-
-New functionalities:
-
+09/25/2024: Added labels on the vertical axes
 '''
 import serial
 from serial.tools import list_ports
