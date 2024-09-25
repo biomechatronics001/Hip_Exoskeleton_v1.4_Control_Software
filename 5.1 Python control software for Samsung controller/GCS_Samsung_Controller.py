@@ -1,3 +1,6 @@
+'''
+09/25/2024: Added labels on the vertical axes
+'''
 import serial
 from serial.tools import list_ports
 import struct
