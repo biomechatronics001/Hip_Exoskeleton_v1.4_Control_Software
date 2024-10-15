@@ -600,10 +600,22 @@ void Compute_Torque_Commands()
     double x = (imu.LTx - imu.RTx) / 180.0 * 3.1415926;
     double x_dot = (imu.LTAVx - imu.RTAVx) / 180 * 3.1415926;
     NYU_time = (micros() - NYU_start_time) / 1000000.0;
-    torque_command_L = - (13.9758 * x + 2.1551 * x_dot) + (-6.3961 * 1 + (-4.3143) * sin(NYU_time) + (-6.2224) * cos(NYU_time) + (-3.9566) * sin(2*NYU_time) + 1.2621 * cos(2*NYU_time) + (-2.4282) * sin(3*NYU_time) + 5.5883 * cos(3*NYU_time) + (-416.1619) * sin(4*NYU_time) + 210.3456 * cos(4*NYU_time) + 10.3936 * sin(5*NYU_time) + (-3.5327) * cos(5*NYU_time));
+    // for 0.75 m/s
+    // torque_command_L = - (13.9758 * x + 2.1551 * x_dot) + (-6.3961 * 1 + (-4.3143) * sin(NYU_time) + (-6.2224) * cos(NYU_time) + (-3.9566) * sin(2*NYU_time) + 1.2621 * cos(2*NYU_time) + (-2.4282) * sin(3*NYU_time) + 5.5883 * cos(3*NYU_time) + (-416.1619) * sin(4*NYU_time) + 210.3456 * cos(4*NYU_time) + 10.3936 * sin(5*NYU_time) + (-3.5327) * cos(5*NYU_time));
+    // torque_command_R = -torque_command_L;
+    // torque_command_L = torque_command_L * 0.01; // need to put a negative sign for hip v1.4, but no negative sign for hip v1.3
+    // torque_command_R = torque_command_R * 0.01;
+    // for 1.25 m/s
+    // torque_command_L = - (13.9755 * x + 2.1551 * x_dot) + (1.5155 * 1 + 7.5488 * sin(NYU_time) + (-6.4999) * cos(NYU_time) + 13.0047 * sin(2*NYU_time) + (-9.7133) * cos(2*NYU_time) + (-4.2707) * sin(3*NYU_time) + 7.3501 * cos(3*NYU_time) + (-1.5642) * sin(4*NYU_time) + 9.0472 * cos(4*NYU_time) + (-181.2079) * sin(5*NYU_time) + (-434.8661) * cos(5*NYU_time));
+    // torque_command_R = -torque_command_L;
+    // torque_command_L = torque_command_L * 0.01; // need to put a negative sign for hip v1.4, but no negative sign for hip v1.3
+    // torque_command_R = torque_command_R * 0.01;
+    // for 1.75 m/s
+    torque_command_L = - (13.9755 * x + 2.1551 * x_dot) + (16.6138 * 1 + (-7.1724) * sin(NYU_time) + 13.4748 * cos(NYU_time) + 28.5504 * sin(2*NYU_time) + (-3.0885) * cos(2*NYU_time) + (-4.9735) * sin(3*NYU_time) + 7.2181 * cos(3*NYU_time) + (-302.0606) * sin(4*NYU_time) + (-387.0711) * cos(4*NYU_time) + (-7.3133) * sin(5*NYU_time) + 6.2453 * cos(5*NYU_time));
     torque_command_R = -torque_command_L;
-    torque_command_L = -torque_command_L * 0.01;
+    torque_command_L = torque_command_L * 0.01; // need to put a negative sign for hip v1.4, but no negative sign for hip v1.3
     torque_command_R = torque_command_R * 0.01;
+
     Cur_command_L = torque_command_L / torque_constant_before_gear / Gear_ratio;
     Cur_command_R = torque_command_R / torque_constant_before_gear / Gear_ratio;
   }
