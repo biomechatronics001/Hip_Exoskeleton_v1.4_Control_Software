@@ -106,3 +106,30 @@ Youtube video: https://youtu.be/w6m0pwIsVQM
 - Log data (csv file)
 - Detect the available COM ports
 - Select the COM port for the communication
+
+# Common Issues
+
+## Teensy 4.1 in the control box cannot be recognized by high-level computer when motors are turned on
+
+### **Description**
+
+It is observed that Teensy 4.1 in the control box cannot be recognized by the high-level computer when motors are turned on. 
+
+![Issues_Teensy_USBHub_PC_Connection](./Figures/Issues_Teensy_USBHub_PC_Connection.png)
+
+* **Scenario 1**: If Teensy 4.1 is directly connected to the USB port of the computer via microUSB-to-USB cable, the USB port of the computer can be damaged. Teensy 4.1 also cannot be reprogrammed in this case.  
+* **Scenario 2**: If Teensy 4.1 is connected to the computer via a low-end USB hub (e.g., [Satechi USB-C](https://www.amazon.com/Satechi-USB-C-Multi-Port-Ethernet-Adapter/dp/B083XCLQWP))
+* **Scenario 3**: If Teensy 4.1 is connected to the computer via a high-end USB hub (e.g., [Anker USB-C Hub](https://www.amazon.com/Anker-PowerExpand-Adapter-Delivery-Ethernet/dp/B0874M3KW4) we used), everything is fine. Teensy 4.1 can be recognized and reprogrammed by the computer without issues regardless of whether motors are turned on or not.
+
+### **Investigation**
+
+* **Scenario 1**:
+* **Scenario 2**: 
+* **Scenario 3**: 
+
+### **Cause**
+
+Teensy does not have a built-in signal filtering circuit. As a result, the voltage on D+ line of the microUSB cable rises to ~1.7V when motor is turned on, which could damage the USB port of the computer. For 
+
+### **Solution**
+
