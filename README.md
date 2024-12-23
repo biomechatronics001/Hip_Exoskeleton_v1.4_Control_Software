@@ -115,6 +115,8 @@ Youtube video: https://youtu.be/w6m0pwIsVQM
 
 It is observed that Teensy 4.1 in the control box cannot be recognized by the high-level computer when motors are turned on. 
 
+Path to the slide for the screenshot below: `\Dropbox\BiomechatronicsLab\Projects\Hip and Back Exoskeletons\Code software\PCB Issues Tracker.pptx` ([Dropbox Link](https://www.dropbox.com/scl/fi/0c7o3d1p0df7tmn4kszgm/PCB-Issues-Tracker.pptx?rlkey=3p3z73f25ww4jonoatzoubdwc&dl=0))
+
 ![Issues_Teensy_USBHub_PC_Connection](./Figures/Issues_Teensy_USBHub_PC_Connection.png)
 
 * **Scenario 1**: If Teensy 4.1 is directly connected to the USB port of the computer via microUSB-to-USB cable, the USB port of the computer can be damaged. Teensy 4.1 also cannot be reprogrammed in this case.  
