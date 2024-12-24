@@ -109,39 +109,5 @@ Youtube video: https://youtu.be/w6m0pwIsVQM
 
 # Common Issues
 
-## Teensy 4.1 in the control box cannot be recognized by high-level computer when motors are turned on
 
-### **Description**
-
-It is observed that Teensy 4.1 in the control box cannot be recognized by the high-level computer when motors are turned on. 
-
-Path to the slide for the screenshot below: `\Dropbox\BiomechatronicsLab\Projects\Hip and Back Exoskeletons\Code software\PCB Issues Tracker.pptx` ([Dropbox Link](https://www.dropbox.com/scl/fi/0c7o3d1p0df7tmn4kszgm/PCB-Issues-Tracker.pptx?rlkey=3p3z73f25ww4jonoatzoubdwc&dl=0))
-
-![Issues_Teensy_USBHub_PC_Connection](./Figures/Issues_Teensy_USBHub_PC_Connection.png)
-
-* **Scenario 1**: If Teensy 4.1 is directly connected to the USB port of the computer via microUSB-to-USB cable, the USB port of the computer can be damaged. Teensy 4.1 also cannot be reprogrammed in this case.  
-* **Scenario 2**: If Teensy 4.1 is connected to the computer via a low-end USB hub (e.g., [Satechi USB-C Hub](https://www.amazon.com/Satechi-USB-C-Multi-Port-Ethernet-Adapter/dp/B083XCLQWP))
-* **Scenario 3**: If Teensy 4.1 is connected to the computer via a high-end USB hub (e.g., [Anker USB-C Hub](https://www.amazon.com/Anker-PowerExpand-Adapter-Delivery-Ethernet/dp/B0874M3KW4) we used), everything is fine. Teensy 4.1 can be recognized and reprogrammed by the computer without issues regardless of whether motors are turned on or not.
-
-### **Investigation**
-
-* **Scenario 2**: 
-  * Case 1 (with intact microUSB-to-USB cable and motor turned on): Voltage on D+ wire within the microUSB-to-USB cable rises to 2.7V.
-  * Case 2 (with 5V line within microUSB-to-USB cable cut and motor turned off): No voltage on D+ or D- wire; 5V on both ends of the cut 5V wire.
-  * Case 3 (with 5V line within microUSB-to-USB cable cut and motor turned on): No voltage on D- wire; ~3V on D+ wire; 5V on both ends of the cut 5V wire.
-* **Scenario 3**: 
-  * Case 1 (with intact microUSB-to-USB cable and motor turned on): Voltage on D+ wire within the microUSB-to-USB cable rises to 0.7V when motor is turned on.
-  * Case 2 (with 5V line within microUSB-to-USB cable cut and motor turned off): No voltage on D+ or D- wire; 5V on the end of the cut 5V wire proximal to Teensy and zero voltage on the other end of the cut 5V wire proximal to the computer.
-  * Case 3 (with 5V line within microUSB-to-USB cable cut and motor turned on): No voltage on D- wire; ~1.5V on D+ wire; 5V on the end of the cut 5V wire proximal to Teensy and zero voltage on the other end of the cut 5V wire proximal to the computer.
-
-### **Cause**
-
-Teensy does not have a built-in signal filtering circuit. As a result, the voltage on D+ line of the microUSB cable rises to a voltage that is too high when motor is turned on, which could damage the USB port of the computer. A good USB hub that has built-in signal filtering circuit can suppress the high voltage on D+ wire and maintain functional communication.
-
-### **Solution**
-* Temporary solution 1: Use a USB hub (e.g., [this one](https://www.amazon.com/Anker-PowerExpand-Adapter-Delivery-Ethernet/dp/B0874M3KW4)) that has built-in signal filtering circuit can suppress the high voltage on D+ wire and maintain functional communication.
-* Temporary solution 2: Connect capacitors and inductors (uH level) to the microUSB-to-USB cable as shown below.
-  ![Teensy_MicroUSB_Cable_Modification](./Figures/Teensy_MicroUSB_Cable_Modification.png)
-* Temporary solution 3: Connect to Teensy and reprogram Teensy only when motors are turned off.
-* Permanent solution: to be added.
 
